@@ -8,10 +8,12 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 
-// Routes
+app.use(cors({
+  origin: "*" // For testing, allows all origins
+  // later you can restrict to your frontend URL
+}));
 app.use("/api", orderRoutes);
 
 // Connect to MongoDB
