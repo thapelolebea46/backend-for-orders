@@ -103,4 +103,58 @@ router.get("/orders", async (req, res) => {
   }
 });
 
+router.get("/orders/contact/:contact", async (req, res) => {
+  try {
+    const { contact } = req.params;
+
+    if (!contact) {
+      return res.status(400).json({ message: "Contact is required" });
+    }
+
+    const trimmedContact = contact.trim();
+
+    // Find all orders matching this contact
+    const orders = await Order.find({ contact: trimmedContact }).sort({ createdAt: -1 });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this contact" });
+    }
+
+    res.status(200).json(orders);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+// routes/orders.js
+router.get("/orders/search", async (req, res) => {
+  try {
+    const { name, contact } = req.query;
+
+    // Check that both fields are provided
+    if (!name || !contact) {
+      return res.status(400).json({ message: "Name and contact are required" });
+    }
+
+    const trimmedName = name.trim();
+    const trimmedContact = contact.trim();
+
+    // Find orders that match BOTH name and contact exactly
+    const orders = await Order.find({
+      name: trimmedName,
+      contact: trimmedContact
+    }).sort({ createdAt: -1 });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this name and contact" });
+    }
+
+    res.status(200).json(orders);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 export default router;
