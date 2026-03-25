@@ -37,6 +37,7 @@ console.log("ORDER MADE");
         formattedNumber,
         `Hi ${order.name}, your order of R${total} is being prepared! 🎉`
       );
+      console.log("Does it get here?");
    
 
     res.status(201).json(savedOrder);
