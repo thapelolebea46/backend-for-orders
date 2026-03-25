@@ -1,14 +1,19 @@
 import express from "express";
-import Order from "../models/Order.js";
+import Order from "../models/Order.js"; 
+import { sendSMS } from "../utils/vonage.js";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const router = express.Router();
 
 // POST order
 router.post("/orders", async (req, res) => {
+  
   try {
     const { name, contact, items, total } = req.body;
     const status="pending";
-
+console.log("ORDER MADE");
     if (!name || !contact || !items || !total) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -22,6 +27,17 @@ router.post("/orders", async (req, res) => {
     });
 
     const savedOrder = await newOrder.save();
+      // 📲 Format SA number (0712345678 → +27712345678)
+   
+
+    // ✅ Send confirmation SMS
+ const formattedNumber = "27" + order.contact.slice(1);
+
+      await sendSMS(
+        formattedNumber,
+        `Hi ${order.name}, your order of R${total} is being prepared! 🎉`
+      );
+   
 
     res.status(201).json(savedOrder);
   } catch (error) {
@@ -71,6 +87,7 @@ router.put("/orders/:id/status", async (req, res) => {
     await order.save();
 
     res.status(200).json(order);
+   
 
   } catch (error) {
     res.status(500).json({ message: error.message });
