@@ -31,13 +31,8 @@ console.log("ORDER MADE");
    
 
     // ✅ Send confirmation SMS
- const formattedNumber = "27" + order.contact.slice(1);
-
-      await sendSMS(
-        formattedNumber,
-        `Hi ${order.name}, your order of R${total} is being prepared! 🎉`
-      );
-      console.log("Does it get here?");
+     sendSMS("27734180319","NEW ORDER SUCCESSFULLY MADE");
+      console.log("it gets here");
    
 
     res.status(201).json(savedOrder);

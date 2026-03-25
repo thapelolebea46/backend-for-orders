@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import orderRoutes from "./routes/orderRoutes.js";
+import { sendSMS } from "./utils/vonage.js";
 dotenv.config();
 
 const app = express();
-
 
 
 
