@@ -30,9 +30,7 @@ console.log("ORDER MADE");
       // 📲 Format SA number (0712345678 → +27712345678)
    
 
-    // ✅ Send confirmation SMS
-     sendSMS("27734180319","NEW ORDER SUCCESSFULLY MADE");
-      console.log("it gets here");
+    
    
 
     res.status(201).json(savedOrder);
